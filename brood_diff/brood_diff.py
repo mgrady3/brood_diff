@@ -25,6 +25,31 @@ def cli():
     pass
 
 
+# CLI wrappers
+@cli.command(name="get-index")
+@click.option('--url', '-u', type=str)
+@click.option('--repository', '-r', type=str,
+              help="Repository must be in format `org/repo`")
+@click.option('--platform', '-p', type=str)
+@click.option('--version', '-v', type=str)
+@click.option('--output', '-o', type=str)
+def cli_get_index(url, repository, platform, version, output):
+    try:
+        org, repo = repository.split("/")
+    except ValueError:
+        click.echo("Repository must be in format `org/repo`")
+        return
+    idx = get_index(url,
+                    org,
+                    repo,
+                    platform,
+                    version)
+    to_json_file(idx, output)
+
+
+# tested functions
+
+
 def get_index(url: str, org: str, repo: str,
               plat: str, pyver: str) -> dict:
     """ Fetch index for a given repo/platform/python-tag."""
@@ -61,3 +86,7 @@ def from_json_file(path: str) -> dict:
     """ Read index from json file."""
     with open(path, 'r') as f:
         return json.loads(f.read())
+
+
+if __name__ == '__main__':
+    cli()
