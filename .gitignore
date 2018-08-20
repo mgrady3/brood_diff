@@ -1,0 +1,11 @@
+.vscode/
+
+*.py[cod]
+
+__pycache__/
+
+.cache
+
+build/
+dist/
+brood_diff.egg-info/
