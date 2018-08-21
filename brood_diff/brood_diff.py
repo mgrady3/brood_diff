@@ -33,7 +33,7 @@ def cli():
 @click.option('--platform', '-p', type=str)
 @click.option('--version', '-v', type=str)
 @click.option('--output', '-o', type=str)
-@click.option('--sort/--no-sort', default=False)
+@click.option('--sort/--no-sort', default=True)
 def cli_get_index(url, repository, platform, version, output, sort):
     try:
         org, repo = repository.split("/")
