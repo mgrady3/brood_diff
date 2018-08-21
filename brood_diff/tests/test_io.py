@@ -35,7 +35,7 @@ class TestIO(object):
 
     def test_from_json(self):
         # given
-        test_file = os.path.join(self.test_data, "idx-8-20-18-e-gpl-36.json")
+        test_file = os.path.join(self.test_data, "idx-e-gpl-rh6-36.json")
 
         # when
         idx = from_json_file(test_file)
@@ -88,3 +88,15 @@ class TestIO(object):
         # then
         assert os.path.exists(path)
         assert os.path.getsize(path) > 0
+
+    def test_read_formatted_json(self):
+        """ Test reading vs-code auto json formatting."""
+        # given
+        test_file = os.path.join(self.test_data, "test-formatted-index.json")
+
+        # when
+        idx = from_json_file(test_file)
+
+        # then
+        assert isinstance(idx, dict)
+        assert idx
