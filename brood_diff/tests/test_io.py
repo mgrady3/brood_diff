@@ -1,6 +1,7 @@
 from brood_diff.brood_diff import get_index, to_json_file, from_json_file
 
 import os
+import pytest
 import tempfile
 
 
@@ -66,7 +67,7 @@ class TestIO(object):
         # then
         assert idx_from_brood == idx_from_file
 
-    # TODO: find a way to test the sorting
+    @pytest.mark.skip(reason="Haven't come up with reliable test yet.")
     def test_to_json_file_sorted(self):
         # given
         BASE_URL = "https://packages.enthought.com"
