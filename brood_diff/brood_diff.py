@@ -45,6 +45,7 @@ def cli_get_index(url, repository, platform, version, output, sort):
                     repo,
                     platform,
                     version)
+    click.echo("Writing output to json sort={} ...".format(sort))
     to_json_file(idx, output, sort=sort)
 
 
@@ -92,7 +93,7 @@ def index_diff(local_index: dict, remote_index: dict) -> dict:
 def to_json_file(idx: dict, path: str, sort: bool = False) -> None:
     """ Write index to file as json."""
     with open(path, 'w') as f:
-        json.dump(idx, f)
+        json.dump(idx, f, sort_keys=sort)
 
 
 def from_json_file(path: str) -> dict:
