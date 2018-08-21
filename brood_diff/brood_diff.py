@@ -71,7 +71,7 @@ def get_index(url: str, org: str, repo: str,
     if legacy:
         resource = "/".join((url, LEGACY_INDEX_ROUTE,
                              org, repo, plat, pyver, "eggs"))
-    else:                             
+    else:                       
         resource = "/".join((url, INDEX_ROUTE, org, repo, plat, pyver, "eggs"))
     print("Requesting {} ...".format(resource))
     r = requests.get(resource)
