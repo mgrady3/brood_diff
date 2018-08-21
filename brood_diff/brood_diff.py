@@ -17,6 +17,7 @@ import requests
 
 BASE_URL = "https://packages2.enthought.com"
 INDEX_ROUTE = "api/v1/json/indices"
+LEGACY_INDEX_ROUTE = "api/v0/json/indices"
 
 
 @click.group()
@@ -34,7 +35,9 @@ def cli():
 @click.option('--version', '-v', type=str)
 @click.option('--output', '-o', type=str)
 @click.option('--sort/--no-sort', default=True)
-def cli_get_index(url, repository, platform, version, output, sort):
+@click.option('--legacy/--no-legacy', default=False,
+              help="set to True to use legacy v0 api")
+def cli_get_index(url, repository, platform, version, output, sort, legacy):
     try:
         org, repo = repository.split("/")
     except ValueError:
@@ -44,7 +47,8 @@ def cli_get_index(url, repository, platform, version, output, sort):
                     org,
                     repo,
                     platform,
-                    version)
+                    version,
+                    legacy)
     click.echo("Writing output to json sort={} ...".format(sort))
     to_json_file(idx, output, sort=sort)
 
@@ -62,9 +66,13 @@ def cli_gen_diff(local, remote, output):
 
 
 def get_index(url: str, org: str, repo: str,
-              plat: str, pyver: str) -> dict:
+              plat: str, pyver: str, legacy: bool = False) -> dict:
     """ Fetch index for a given repo/platform/python-tag."""
-    resource = "/".join((url, INDEX_ROUTE, org, repo, plat, pyver, "eggs"))
+    if legacy:
+        resource = "/".join((url, LEGACY_INDEX_ROUTE,
+                             org, repo, plat, pyver, "eggs"))
+    else:                             
+        resource = "/".join((url, INDEX_ROUTE, org, repo, plat, pyver, "eggs"))
     print("Requesting {} ...".format(resource))
     r = requests.get(resource)
     return r.json()
