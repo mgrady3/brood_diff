@@ -41,3 +41,22 @@ class TestGetIndex(object):
         # then
         assert isinstance(idx, dict)
         assert idx
+    
+    def test_legacy_get_index(self):
+        # given
+        BASE_URL = "https://packages.enthought.com"
+        REPO = "gpl"
+        ORG = "enthought"
+        PLAT = "rh6-x86_84"
+        VER = "cp27"
+
+        # when
+        idx = get_index(url=BASE_URL,
+                        org=ORG,
+                        repo=REPO,
+                        plat=PLAT,
+                        pyver=VER,
+                        legacy=True)
+        # then
+        assert isinstance(idx, dict)
+        assert idx
