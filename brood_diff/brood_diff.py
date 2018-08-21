@@ -33,7 +33,8 @@ def cli():
 @click.option('--platform', '-p', type=str)
 @click.option('--version', '-v', type=str)
 @click.option('--output', '-o', type=str)
-def cli_get_index(url, repository, platform, version, output):
+@click.option('--sort/--no-sort', default=False)
+def cli_get_index(url, repository, platform, version, output, sort):
     try:
         org, repo = repository.split("/")
     except ValueError:
@@ -44,7 +45,16 @@ def cli_get_index(url, repository, platform, version, output):
                     repo,
                     platform,
                     version)
-    to_json_file(idx, output)
+    to_json_file(idx, output, sort=sort)
+
+
+@cli.command(name="gen-diff")
+@click.option('--local', '-l', type=str)
+@click.option('--remote', 'r', type=str)
+@click.option('--output', 'o', type=str)
+def cli_gen_diff(local, remote, output):
+    diff = index_diff(local, remote)
+    to_json_file(diff, output)
 
 
 # tested functions
@@ -60,7 +70,14 @@ def get_index(url: str, org: str, repo: str,
 
 
 def index_diff(local_index: dict, remote_index: dict) -> dict:
-    """
+    """ Calculate the difference between two json brood indices.
+    Adapted from brood/brood/sync/egg_sync.py
+
+    Remove calculations for eggs to delete:
+    Unless user specifically requests that we remove unused or outdated eggs
+    we should make minimal changes to their local EDS instance.
+
+    Likewise, remove calculations for eggs to move
     """
     local_index_set = set(local_index)
     remote_index_set = set(remote_index)
@@ -69,14 +86,10 @@ def index_diff(local_index: dict, remote_index: dict) -> dict:
     missing_egg_index = {key: remote_index[key]
                          for key in missing_egg_names}
 
-    delete_egg_names = local_index_set - remote_index_set
-    delete_egg_index = {key: local_index[key]
-                        for key in delete_egg_names}
-
-    return {"missing": missing_egg_index, "delete": delete_egg_index}
+    return {"missing": missing_egg_index}
 
 
-def to_json_file(idx: dict, path: str) -> None:
+def to_json_file(idx: dict, path: str, sort: bool = False) -> None:
     """ Write index to file as json."""
     with open(path, 'w') as f:
         json.dump(idx, f)
