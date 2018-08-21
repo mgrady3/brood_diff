@@ -65,3 +65,25 @@ class TestIO(object):
 
         # then
         assert idx_from_brood == idx_from_file
+
+    # TODO: find a way to test the sorting
+    def test_to_json_file_sorted(self):
+        # given
+        BASE_URL = "https://packages.enthought.com"
+        REPO = "gpl"
+        ORG = "enthought"
+        PLAT = "rh6-x86_84"
+        VER = "cp27"
+
+        # when
+        idx = get_index(url=BASE_URL,
+                        org=ORG,
+                        repo=REPO,
+                        plat=PLAT,
+                        pyver=VER)
+        _, path = tempfile.mkstemp(suffix=".json")
+        to_json_file(idx, path, sort=True)
+
+        # then
+        assert os.path.exists(path)
+        assert os.path.getsize(path) > 0
