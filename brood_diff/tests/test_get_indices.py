@@ -41,7 +41,7 @@ class TestGetIndex(object):
         # then
         assert isinstance(idx, dict)
         assert idx
-    
+
     def test_legacy_get_index(self):
         # given
         BASE_URL = "https://packages.enthought.com"
