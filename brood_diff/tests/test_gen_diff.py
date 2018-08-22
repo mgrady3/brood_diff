@@ -74,4 +74,4 @@ class TestIndexDiff(object):
 
         # then
         assert diff['missing']
-        assert "psycopg2-2.7.3.2-1.egg" in diff['missing']
+        assert "psycopg2-2.7.3.2-1.egg" in diff['missing'].keys()
