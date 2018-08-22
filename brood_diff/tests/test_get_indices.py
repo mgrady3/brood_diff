@@ -1,7 +1,7 @@
 # (C) Copyright 2018 Enthought, Inc., Austin, TX
 # All rights reserved.
 #
-from brood_diff.brood_diff import get_index
+from brood_diff.diff import get_index
 import pytest
 import requests
 

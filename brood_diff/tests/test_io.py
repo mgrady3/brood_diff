@@ -1,7 +1,7 @@
 # (C) Copyright 2018 Enthought, Inc., Austin, TX
 # All rights reserved.
 #
-from brood_diff.brood_diff import get_index, to_json_file, from_json_file
+from brood_diff.diff import get_index, to_json_file, from_json_file
 
 import os
 import pytest
