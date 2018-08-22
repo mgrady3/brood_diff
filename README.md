@@ -22,19 +22,19 @@ given brood indices represented in JSON.
 * Get Index: Use this function to generate the json representation of a brood index
 
     ```
-    python brood_diff.py get-index -u <brood-url>
-                                   -r <org/repo>
-                                   -p <platform>
-                                   -v <python-tag>
-                                   -o <path-to-output-file>
+    python diff.py get-index -u <brood-url>
+                             -r <org/repo>
+                             -p <platform>
+                             -v <python-tag>
+                             -o <path-to-output-file>
     ```
 
 * Index Diff: Use this function to calculate the difference between two brood indices.
 
     ```
-    python brood_diff.py gen-diff -l <path-to-local-index>
-                                  -r <path-to-remote-index>
-                                  -o <path-to-output-file>
+    python diff.py gen-diff -l <path-to-local-index>
+                            -r <path-to-remote-index>
+                            -o <path-to-output-file>
     ```
 
 ### Notes
