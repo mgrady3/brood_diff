@@ -1,3 +1,6 @@
+# (C) Copyright 2018 Enthought, Inc., Austin, TX
+# All rights reserved.
+#
 """
 Brood-diff is a CLI for calculating the diff between two given brood indices.
 

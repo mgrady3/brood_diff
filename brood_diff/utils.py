@@ -1,3 +1,6 @@
+# (C) Copyright 2018 Enthought, Inc., Austin, TX
+# All rights reserved.
+#
 """
 Utility functions for the brood_diff library.
 """

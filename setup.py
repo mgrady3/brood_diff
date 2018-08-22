@@ -1,3 +1,7 @@
+# (C) Copyright 2018 Enthought, Inc., Austin, TX
+# All rights reserved.
+#
+
 from setuptools import setup, find_packages
 
 setup(
