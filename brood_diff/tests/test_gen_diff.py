@@ -7,6 +7,11 @@ import os
 
 
 class TestIndexDiff(object):
+    # potentially useful paths for tests
+    thisdir = os.path.abspath(os.path.dirname(__file__))
+    srcdir = os.path.abspath(os.path.join(thisdir, os.pardir))
+    rootdir = os.path.abspath(os.path.join(srcdir, os.pardir))
+    test_data = os.path.join(rootdir, "test_data")
 
     def test_diff_same_index(self):
         # given
@@ -59,19 +64,39 @@ class TestIndexDiff(object):
 
     def test_diff_manual_edits(self):
         """ Use test_data json files, same index, one with manual edits."""
-        # given
-        thisdir = os.path.abspath(os.path.dirname(__file__))
-        srcdir = os.path.abspath(os.path.join(thisdir, os.pardir))
-        rootdir = os.path.abspath(os.path.join(srcdir, os.pardir))
-        test_data = os.path.join(rootdir, "test_data")
 
         # when
-        remote_idx = from_json_file(os.path.join(test_data,
+        remote_idx = from_json_file(os.path.join(self.test_data,
                                                  "idx-e-gpl-rh6-36.json"))
-        local_idx = from_json_file(os.path.join(test_data,
+        local_idx = from_json_file(os.path.join(self.test_data,
                                                 "idx-e-gpl-rh6-36-edit.json"))
         diff = index_diff(local_idx, remote_idx)
 
         # then
         assert diff['missing']
         assert "psycopg2-2.7.3.2-1.egg" in diff['missing'].keys()
+
+    def test_diff_both_empty(self):
+        # given
+
+        # when
+        remote_idx = local_idx = {}
+
+        diff = index_diff(local_idx, remote_idx)
+
+        # then
+        assert not diff['missing']
+
+    def test_diff_local_empty(self):
+        # given
+
+        # when
+        local_idx = {}
+        remote_idx = from_json_file(os.path.join(self.test_data,
+                                                 "idx-e-gpl-rh6-36.json"))
+
+        diff = index_diff(local_idx, remote_idx)
+
+        # then
+        assert diff['missing']
+        assert diff['missing'].keys() == remote_idx.keys()
