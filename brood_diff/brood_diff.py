@@ -30,7 +30,8 @@ import click
 import json
 import requests
 
-# from typing import Optional
+from brood_diff.valid import PLATS, VERS
+
 
 BASE_URL = "https://packages2.enthought.com"
 INDEX_ROUTE = "api/v1/json/indices"
@@ -60,6 +61,17 @@ def cli_get_index(url, repository, platform, version, output, sort, legacy):
     except ValueError:
         click.echo("Repository must be in format `org/repo`")
         return
+    if platform not in PLATS:
+        click.echo("Invalid platform specification: {}".format(platform),
+                   fg='red')
+        click.echo("For a list of valid platforms, run brood_diff list-platforms.")  # noqa
+        return
+    if version not in VERS:
+        click.secho("Invalid version specification: {}".format(version),
+                    fg='red')
+        click.echo("For a list of valid versions, run brood_diff list-versions.")  # noqa
+        return
+
     idx = get_index(url,
                     org,
                     repo,
@@ -79,6 +91,20 @@ def cli_gen_diff(local, remote, output):
     remote_index = from_json_file(remote)
     diff = index_diff(local_index, remote_index)
     to_json_file(diff, output)
+
+
+@cli.command(name="list-platforms")
+def list_platforms():
+    click.echo("Valid Platforms:")
+    for plat in PLATS:
+        click.echo(plat)
+
+
+@cli.command(name="list-versions")
+def list_versions():
+    click.echo("Valid Python Version tags:")
+    for ver in VERS:
+        click.echo(ver)
 
 
 # tested functions
