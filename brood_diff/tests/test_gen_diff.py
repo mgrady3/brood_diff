@@ -1,4 +1,6 @@
-from brood_diff.brood_diff import get_index, index_diff
+from brood_diff.brood_diff import get_index, index_diff, from_json_file
+
+import os
 
 
 class TestIndexDiff(object):
@@ -51,3 +53,22 @@ class TestIndexDiff(object):
         # then
         assert isinstance(diff, dict)
         assert diff['missing']
+
+    def test_diff_manual_edits(self):
+        """ Use test_data json files, same index, one with manual edits."""
+        # given
+        thisdir = os.path.abspath(os.path.dirname(__file__))
+        srcdir = os.path.abspath(os.path.join(thisdir, os.pardir))
+        rootdir = os.path.abspath(os.path.join(srcdir, os.pardir))
+        test_data = os.path.join(rootdir, "test_data")
+
+        # when
+        remote_idx = from_json_file(os.path.join(test_data,
+                                                 "idx-e-gpl-rh6-36.json"))
+        local_idx = from_json_file(os.path.join(test_data,
+                                                "idx-e-gpl-rh6-36-edit.json"))
+        diff = index_diff(local_idx, remote_idx)
+
+        # then
+        assert diff['missing']
+        assert "psycopg2-2.7.3.2-1.egg" in diff['missing']
