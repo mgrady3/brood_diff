@@ -10,6 +10,8 @@ the old method of requiring an entire hatcher export of the Enthought brood.
 
 Usage:
     Get Index:
+    Use this function to generate the json representation of a brood index
+
     python brood_diff.py get-index -u <brood-url>
                                    -r <org/repo>
                                    -p <platform>
@@ -17,6 +19,7 @@ Usage:
                                    -o <path-to-output-file>
 
     Index Diff:
+    Use this function to calculate the difference between two brood indices.
     python brood_diff.py gen-diff -l <path-to-local-index>
                                   -r <path-to-remote-index>
                                   -o <path-to-output-file>
@@ -69,8 +72,8 @@ def cli_get_index(url, repository, platform, version, output, sort, legacy):
 
 @cli.command(name="gen-diff")
 @click.option('--local', '-l', type=str)
-@click.option('--remote', 'r', type=str)
-@click.option('--output', 'o', type=str)
+@click.option('--remote', '-r', type=str)
+@click.option('--output', '-o', type=str)
 def cli_gen_diff(local, remote, output):
     local_index = from_json_file(local)
     remote_index = from_json_file(remote)
