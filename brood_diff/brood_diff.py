@@ -6,6 +6,17 @@ air-gapped brood instance with the Enthought brood, and is a replacement to
 the old method of requiring an entire hatcher export of the Enthought brood.
 
 Usage:
+    Get Index:
+    python brood_diff.py get-index -u <brood-url>
+                                   -r <org/repo>
+                                   -p <platform>
+                                   -v <python-tag>
+                                   -o <path-to-output-file>
+
+    Index Diff:
+    python brood_diff.py gen-diff -l <path-to-local-index>
+                                  -r <path-to-remote-index>
+                                  -o <path-to-output-file>
 
 """
 
@@ -58,7 +69,9 @@ def cli_get_index(url, repository, platform, version, output, sort, legacy):
 @click.option('--remote', 'r', type=str)
 @click.option('--output', 'o', type=str)
 def cli_gen_diff(local, remote, output):
-    diff = index_diff(local, remote)
+    local_index = from_json_file(local)
+    remote_index = from_json_file(remote)
+    diff = index_diff(local_index, remote_index)
     to_json_file(diff, output)
 
 
