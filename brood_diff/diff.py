@@ -45,7 +45,9 @@ def cli():
     pass
 
 
-# CLI wrappers
+# CLI wrappers #
+
+
 @cli.command(name="get-index")
 @click.option('--url', '-u', type=str)
 @click.option('--repository', '-r', type=str,
@@ -112,7 +114,7 @@ def list_versions():
         click.echo(ver)
 
 
-# tested functions
+# tested functions #
 
 
 def get_index(url: str, org: str, repo: str,
