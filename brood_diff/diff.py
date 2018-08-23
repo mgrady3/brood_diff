@@ -21,8 +21,8 @@ Usage:
     Index Diff:
     Use this function to calculate the difference between two brood indices.
     python diff.py gen-diff -l <path-to-local-index>
-                                  -r <path-to-remote-index>
-                                  -o <path-to-output-file>
+                            -r <path-to-remote-index>
+                            -o <path-to-output-file>
 
 """
 
@@ -91,7 +91,19 @@ def cli_get_index(url, repository, platform, version, output, sort, legacy):
 @click.option('--remote', '-r', type=str)
 @click.option('--output', '-o', type=str)
 def cli_gen_diff(local, remote, output):
-    """CLI wrapper for index_diff."""
+    """CLI wrapper for index_diff.
+
+    Note, the terminology used is from the perspective of the EDS customer.
+    Thus the local index represents the index you wish to test against the
+    remote (Enthought) index.
+
+    Example:
+    Have customer run get-index on their local EDS to generate the index of
+    their enthought/free repo as a json file - local.json.
+    Next, run the same command against the Brood production server to generate
+    the index of our enthought/free repo as a json file - remote.json.
+    Finally run gen-diff -l local.json -r remote.json
+    """
     local_index = from_json_file(local)
     remote_index = from_json_file(remote)
     diff = index_diff(local_index, remote_index)
