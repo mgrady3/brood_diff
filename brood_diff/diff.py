@@ -99,7 +99,7 @@ def cli_gen_diff(local, remote, output):
 def list_platforms():
     """ List valid input for platform option."""
     click.echo("Valid Platforms:")
-    for plat in valid.PLATS:
+    for plat in sorted(valid.PLATS):
         click.echo(plat)
 
 
@@ -107,7 +107,7 @@ def list_platforms():
 def list_versions():
     """ List valid input for version option."""
     click.echo("Valid Python Version tags:")
-    for ver in valid.VERS:
+    for ver in sorted(valid.VERS):
         click.echo(ver)
 
 
