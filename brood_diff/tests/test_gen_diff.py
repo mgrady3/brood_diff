@@ -18,7 +18,7 @@ class TestIndexDiff(object):
         BASE_URL = "https://packages.enthought.com"
         REPO = "gpl"
         ORG = "enthought"
-        PLAT = "rh6-x86_84"
+        PLAT = "rh6-x86_64"
         VER = "cp27"
 
         # when

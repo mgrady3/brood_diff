@@ -14,7 +14,7 @@ class TestGetIndex(object):
         BASE_URL = "https://packages.entought.com"  # typo
         REPO = "gpl"
         ORG = "enthought"
-        PLAT = "rh6-x86_84"
+        PLAT = "rh6-x86_64"
         VER = "cp27"
 
         # when
@@ -32,7 +32,7 @@ class TestGetIndex(object):
         BASE_URL = "https://packages.enthought.com"
         REPO = "gpl"
         ORG = "enthought"
-        PLAT = "rh6-x86_84"
+        PLAT = "rh6-x86_64"
         VER = "cp27"
 
         # when
@@ -45,12 +45,30 @@ class TestGetIndex(object):
         assert isinstance(idx, dict)
         assert idx
 
+    def test_get_index_bad_org_repo(self):
+        # given
+        BASE_URL = "https://packages.enthought.com"
+        REPO = "gpl"
+        ORG = "entought"  # intentional typo
+        PLAT = "rh6-x86_64"
+        VER = "cp27"
+
+        # when
+        with pytest.raises(requests.HTTPError) as execinfo:
+            get_index(url=BASE_URL,
+                      org=ORG,
+                      repo=REPO,
+                      plat=PLAT,
+                      pyver=VER)
+        # then
+        assert "404" in str(execinfo.value)
+
     def test_legacy_get_index(self):
         # given
         BASE_URL = "https://packages.enthought.com"
         REPO = "gpl"
         ORG = "enthought"
-        PLAT = "rh6-x86_84"
+        PLAT = "rh6-x86_64"
         VER = "cp27"
 
         # when
