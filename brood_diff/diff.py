@@ -29,6 +29,7 @@ Usage:
 import click
 import json
 import requests
+import sys
 
 from brood_diff import valid
 
@@ -124,7 +125,15 @@ def get_index(url: str, org: str, repo: str,
         resource = "/".join((url, INDEX_ROUTE, org, repo, plat, pyver, "eggs"))
     print("Requesting {} ...".format(resource))
     r = requests.get(resource)
-    return r.json()
+    if r.status_code == 200:
+        return r.json()
+    elif r.status_code == 404:
+        # incorrect base url raises ConnectionError and plat and ver get
+        # validated via CLI - thus 404 likely indicates problem with org/repo.
+        print("HTTP 404 Error: Please double check your Repository settings.")
+        print("Repository must be a valid org/repo combination.")
+        r.raise_for_status()
+        sys.exit()
 
 
 def index_diff(local_index: dict, remote_index: dict) -> dict:
