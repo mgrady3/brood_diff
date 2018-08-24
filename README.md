@@ -19,7 +19,8 @@ given brood indices represented in JSON.
 
 ### Usage:
 
-* Get Index: Use this function to generate the json representation of a brood index
+* Get Index: Use this function to generate the json representation of a brood
+  index
 
     ```
     python diff.py get-index -u <brood-url>
@@ -29,14 +30,15 @@ given brood indices represented in JSON.
                              -o <path-to-output-file>
     ```
 
-* Index Diff: Use this function to calculate the difference between two brood indices.
+* Index Diff: Use this function to calculate the difference between two brood
+  indices.
 
     ```
     python diff.py gen-diff -l <path-to-local-index>
                             -r <path-to-remote-index>
                             -o <path-to-output-file>
     ```
-
+  
 ### Notes
 
 Repositories are specified in the Brood/Hatcher format <org/repo> e.g. to
@@ -45,4 +47,12 @@ select the Enthought free repository : -r enthought/free.
 Currently the diff calculates only missing eggs. The reasoning behind this is
 that we should avoid making changes to the end-user's Brood that may break
 code they they have written. Thus no deleted eggs or moved eggs are calculated.
+
+The terminology used for gen-diff is from the perspective of the EDS
+end-user/customer.
+Thus local is the customer index.json and remote is the Enthought index.json.
+
+Currently the HTTP requests are made assuming that the required repos are
+available to the Anonymous team and thus do not require an auth header as part
+of the request.
 
