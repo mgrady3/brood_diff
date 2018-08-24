@@ -1,7 +1,9 @@
 # (C) Copyright 2018 Enthought, Inc., Austin, TX
 # All rights reserved.
 #
-from brood_diff.diff import get_index, to_json_file, from_json_file
+from brood_diff.diff import (
+    get_index, to_json_file, from_json_file, merge_json
+)
 
 import os
 import pytest
@@ -103,3 +105,20 @@ class TestIO(object):
         # then
         assert isinstance(idx, dict)
         assert idx
+
+    def test_merge_json(self):
+        # given
+        indices = ["idx-e-free-rh6-x86_64-36.json",
+                   "idx-e-gpl-rh6-x86_64-36.json",
+                   "idx-e-lgpl-rh6-x86_64-36.json"]
+        paths = [os.path.join(self.test_data, idx) for idx in indices]
+
+        # when
+        _, out_path = tempfile.mkstemp(suffix=".json")
+        merge_json(paths, out_path)
+        full_idx = from_json_file(out_path)
+
+        # then
+        for path in paths:
+            idx = from_json_file(path)
+            assert set(idx).issubset(set(full_idx))
