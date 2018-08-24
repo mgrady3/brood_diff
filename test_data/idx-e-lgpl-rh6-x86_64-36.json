@@ -1,0 +1,73 @@
+{
+    "ngspice-27-1.egg": {
+        "build": 1,
+        "md5": "3ae91f5df2db1e1c139258597b4cf8e0",
+        "mtime": 1527244214.0,
+        "name": "ngspice",
+        "packages": [],
+        "size": 3089663,
+        "version": "27",
+        "python": null,
+        "python_tag": null,
+        "platform_abi": "gnu",
+        "available": true,
+        "type": "egg",
+        "product": null,
+        "full_version": "27-1",
+        "sha256": "98fdafd91b07acfd22d5ed52c40af766d10019d93ea336092cef1b45b6d891ce"
+    },
+    "flake8_import_order-0.17.1-1.egg": {
+        "build": 1,
+        "md5": "7931ccc7f55df80efaae5fd1268f2a81",
+        "mtime": 1527246634.0,
+        "name": "flake8_import_order",
+        "packages": [
+            "pycodestyle 2.3.1"
+        ],
+        "size": 27191,
+        "version": "0.17.1",
+        "python_tag": "cp36",
+        "platform_abi": "gnu",
+        "available": true,
+        "type": "egg",
+        "product": null,
+        "full_version": "0.17.1-1",
+        "sha256": "3cec26329194b8a3376e05e3f194e5c92c49df15c884ef5834ec9fa01d0a929a"
+    },
+    "websocket_client-0.47.0-1.egg": {
+        "build": 1,
+        "md5": "bd51881401a3a3aa19a0fc5c130cebf3",
+        "mtime": 1526568940.0,
+        "name": "websocket_client",
+        "packages": [
+            "six 1.10.0"
+        ],
+        "size": 242861,
+        "version": "0.47.0",
+        "python_tag": "cp36",
+        "platform_abi": "gnu",
+        "available": true,
+        "type": "egg",
+        "product": null,
+        "full_version": "0.47.0-1",
+        "sha256": "23faba1bc928c36e75a5928d97080f5522a0299aba4ffda4516e627b01adb497"
+    },
+    "psycopg2-2.7.3.2-2.egg": {
+        "build": 2,
+        "md5": "2c6a1006187b4b7b4b195c20fd76175e",
+        "mtime": 1526637489.0,
+        "name": "psycopg2",
+        "packages": [
+            "libpq 9.6.5"
+        ],
+        "size": 561553,
+        "version": "2.7.3.2",
+        "python_tag": "cp36",
+        "platform_abi": "gnu",
+        "available": true,
+        "type": "egg",
+        "product": null,
+        "full_version": "2.7.3.2-2",
+        "sha256": "12df6a906d0b08aeeb8b17fe9d7e11774064e4f26958d059877e754a06495aa8"
+    }
+}
