@@ -11,7 +11,7 @@ class TestGetIndex(object):
 
     def test_get_index_bad_url(self):
         # given
-        BASE_URL = "https://packages.entought.com"  # typo
+        BASE_URL = "https://packages.entought.com"  # intentional typo
         REPO = "gpl"
         ORG = "enthought"
         PLAT = "rh6-x86_64"
