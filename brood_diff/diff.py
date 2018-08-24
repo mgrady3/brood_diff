@@ -31,6 +31,8 @@ import json
 import requests
 import sys
 
+from typing import Iterable, Union, NoReturn
+
 from brood_diff import valid
 
 
@@ -66,8 +68,8 @@ def cli_get_index(url, repository, platform, version, output, sort, legacy):
         click.echo("Repository must be in format `org/repo`")
         return
     if platform not in valid.PLATS:
-        click.echo("Invalid platform specification: {}".format(platform),
-                   fg='red')
+        click.secho("Invalid platform specification: {}".format(platform),
+                    fg='red')
         click.echo("For a list of valid platforms: diff.py list-platforms.")
         return
     if version not in valid.VERS:
@@ -129,8 +131,8 @@ def list_versions():
 # tested functions #
 
 
-def get_index(url: str, org: str, repo: str,
-              plat: str, pyver: str, legacy: bool = False) -> dict:
+def get_index(url: str, org: str, repo: str, plat: str, pyver: str,
+              legacy: bool = False) -> Union[dict, NoReturn]:
     """ Fetch index for a given repo/platform/python-tag."""
     if legacy:
         resource = "/".join((url, LEGACY_INDEX_ROUTE,
@@ -180,6 +182,14 @@ def from_json_file(path: str) -> dict:
     """ Read index from json file."""
     with open(path, 'r') as f:
         return json.loads(f.read())
+
+
+def merge_json(input_paths: Iterable[str], output) -> None:
+    """ Given list of paths to json indices, merge into one json file."""
+    index = {}
+    for path in input_paths:
+        index.update(from_json_file(path))
+    to_json_file(index, output, sort=True)
 
 
 if __name__ == '__main__':
