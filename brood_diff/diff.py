@@ -188,11 +188,11 @@ def full_diff_pipeline(local_url: str, org_repos: List[str],
             for ver in vers:
                 org, repo = org_repo.split("/")
                 local_idx.update(get_index(local_url,
-                                             org,
-                                             repo,
-                                             plat,
-                                             ver,
-                                             legacy))
+                                           org,
+                                           repo,
+                                           plat,
+                                           ver,
+                                           legacy))
                 remote_idx.update(get_index(remote_url,
                                             org,
                                             repo,
@@ -201,7 +201,6 @@ def full_diff_pipeline(local_url: str, org_repos: List[str],
                                             legacy))
     diff = index_diff(local_idx, remote_idx)
     to_json_file(diff, output, sort=True)
- 
 
 
 def to_json_file(idx: dict, path: str, sort: bool = False) -> None:
