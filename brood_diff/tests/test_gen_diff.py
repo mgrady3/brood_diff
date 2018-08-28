@@ -4,6 +4,7 @@
 from brood_diff.diff import get_index, index_diff, from_json_file
 
 import os
+import pytest
 
 
 class TestIndexDiff(object):
@@ -101,6 +102,7 @@ class TestIndexDiff(object):
         assert diff['missing']
         assert diff['missing'].keys() == remote_idx.keys()
 
+    @pytest.mark.skip(reason="Unsure how to test - requires two different EDS")
     def test_full_pipeline(self):
         # given
 
