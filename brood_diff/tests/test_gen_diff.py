@@ -100,3 +100,11 @@ class TestIndexDiff(object):
         # then
         assert diff['missing']
         assert diff['missing'].keys() == remote_idx.keys()
+
+    def test_full_pipeline(self):
+        # given
+
+        # when
+
+        # then
+        pass
