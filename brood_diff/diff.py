@@ -31,7 +31,7 @@ import json
 import requests
 import sys
 
-from typing import Iterable, Union, NoReturn
+from typing import Iterable, List, NoReturn, Union
 
 from brood_diff import valid
 
@@ -170,6 +170,38 @@ def index_diff(local_index: dict, remote_index: dict) -> dict:
                          for key in missing_egg_names}
 
     return {"missing": missing_egg_index}
+
+
+def full_diff_pipeline(local_url: str, org_repos: List[str],
+                       plats: List[str], vers: List[str],
+                       output: str,
+                       legacy: bool = False,
+                       remote_url: str = "https://packages.enthought.com"):
+    """ Given set of org/repo/plat/ver, a local EDS host and remote EDS host,
+    calculate the full index diff and write to json file specified by the
+    parameter, output.
+    """
+    local_idx = {}
+    remote_idx = {}
+    for org_repo in org_repos:
+        for plat in plats:
+            for ver in vers:
+                org, repo = org_repo.split("/")
+                local_idx.update(get_index(local_url,
+                                             org,
+                                             repo,
+                                             plat,
+                                             ver,
+                                             legacy))
+                remote_idx.update(get_index(remote_url,
+                                            org,
+                                            repo,
+                                            plat,
+                                            ver,
+                                            legacy))
+    diff = index_diff(local_idx, remote_idx)
+    to_json_file(diff, output, sort=True)
+ 
 
 
 def to_json_file(idx: dict, path: str, sort: bool = False) -> None:
