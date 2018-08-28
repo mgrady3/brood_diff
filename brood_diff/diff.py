@@ -31,7 +31,7 @@ import json
 import requests
 import sys
 
-from typing import Iterable, List, NoReturn, Union
+from typing import Iterable, NoReturn, Tuple, Union
 
 from brood_diff import valid
 
@@ -59,7 +59,7 @@ def cli():
 @click.option('--output', '-o', type=str)
 @click.option('--sort/--no-sort', default=True)
 @click.option('--legacy/--no-legacy', default=False,
-              help="set to True to use legacy v0 api")
+              help="USe --legacy for the legacy v0 API")
 def cli_get_index(url, repository, platform, version, output, sort, legacy):
     """ CLI wrapper for get_index + to_json pipeline."""
     try:
@@ -112,6 +112,24 @@ def cli_gen_diff(local, remote, output):
     to_json_file(diff, output)
 
 
+@cli.command(name="full-diff")
+@click.option('--local', '-l', type=str)
+@click.option('--repository', '-r', multiple=True, type=str,
+              help="Repository must be in format `org/repo`")
+@click.option('--platform', '-p', multiple=True, type=str)
+@click.option('--version', '-v', multiple=True, type=str)
+@click.option('--output', '-o', type=str)
+@click.option('--legacy/--no-legacy', default=False,
+              help="Use --legacy for the legacy v0 API")
+def cli_full_diff(local, repository, platform,
+                  version, output, legacy=False):
+    full_diff_pipeline(local,
+                       repository,
+                       platform,
+                       version,
+                       output)
+
+
 @cli.command(name="list-platforms")
 def list_platforms():
     """ List valid input for platform option."""
@@ -143,11 +161,16 @@ def get_index(url: str, org: str, repo: str, plat: str, pyver: str,
     r = requests.get(resource)
     if r.status_code == 200:
         return r.json()
-    elif r.status_code == 404:
+    elif r.status_code in (400, 404):
         # incorrect base url raises ConnectionError and plat and ver get
         # validated via CLI - thus 404 likely indicates problem with org/repo.
         print("HTTP 404 Error: Please double check your Repository settings.")
         print("Repository must be a valid org/repo combination.")
+        r.raise_for_status()
+        sys.exit()
+    elif r.status_code in (500, 502, 503, 504):  # Brood internal errors
+        msg = "HTTP 50* Error: Please verify that the EDS instance is up at {}"
+        print(msg.format(url))
         r.raise_for_status()
         sys.exit()
 
@@ -172,14 +195,17 @@ def index_diff(local_index: dict, remote_index: dict) -> dict:
     return {"missing": missing_egg_index}
 
 
-def full_diff_pipeline(local_url: str, org_repos: List[str],
-                       plats: List[str], vers: List[str],
+def full_diff_pipeline(local_url: str, org_repos: Tuple[str],
+                       plats: Tuple[str], vers: Tuple[str],
                        output: str,
                        legacy: bool = False,
                        remote_url: str = "https://packages.enthought.com"):
     """ Given set of org/repo/plat/ver, a local EDS host and remote EDS host,
     calculate the full index diff and write to json file specified by the
     parameter, output.
+
+    remote_url is left as an internally available parameter but not exposed
+    via the cli - in general we will target the enthought production url.
     """
     local_idx = {}
     remote_idx = {}
