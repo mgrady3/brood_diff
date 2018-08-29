@@ -2,15 +2,18 @@
 # All rights reserved.
 #
 from brood_diff.diff import (
-    get_index, to_json_file, from_json_file, merge_json
+    get_index, to_json_file, from_json_file, merge_json, gen_full_index
 )
 
+from itertools import product
+import json
 import os
 import pytest
 import tempfile
 
 
 class TestIO(object):
+    # TODO: Use test fixtures
     # potentially useful paths for tests
     thisdir = os.path.abspath(os.path.dirname(__file__))
     srcdir = os.path.abspath(os.path.join(thisdir, os.pardir))
@@ -48,6 +51,29 @@ class TestIO(object):
         # then
         assert isinstance(idx, dict)
         assert idx
+
+    def test_from_json_bad_file(self):
+        # given
+        # intentional typo
+        test_file = os.path.join(self.test_data, "idxx-e-gpl-rh6-36.json")
+
+        # when
+        with pytest.raises(FileNotFoundError) as execinfo:
+            from_json_file(test_file)
+
+        # then
+        assert "No such file or directory" in str(execinfo.value)
+
+    def test_from_json_empty_file(self):
+        # given
+        test_file = os.path.join(self.test_data, "empty.json")
+
+        # when
+        with pytest.raises(json.decoder.JSONDecodeError) as execinfo:
+            from_json_file(test_file)
+
+        # then
+        assert "Expecting value" in str(execinfo.value)
 
     def test_to_from_json_round_trip(self):
         # given
@@ -122,3 +148,36 @@ class TestIO(object):
         for path in paths:
             idx = from_json_file(path)
             assert set(idx).issubset(set(full_idx))
+
+    def test_gen_full_index(self):
+        # given
+        BASE_URL = "https://packages.enthought.com"  # intentional typo
+        REPOS = ("gpl", "free")
+        ORG = ("enthought",)
+        PLATS = ("rh6-x86_64", "osx-x86_64")
+        VERS = ("cp27", "cp35", "cp36")
+
+        ORG_REPOS = tuple("/".join(t) for t in product(ORG, REPOS))
+
+        _, out_path = tempfile.mkstemp(suffix=".json")
+
+        # when
+        gen_full_index(BASE_URL,
+                       ORG_REPOS,
+                       PLATS,
+                       VERS,
+                       out_path)
+        
+        # raises JSONDecodeError if file is empty
+        idx = from_json_file(out_path)
+
+        # then
+        assert os.path.exists(out_path)
+        assert os.path.isfile(out_path)
+        assert idx
+
+        # Make sure a package from each repo exists
+        # enthought/free: alabaster-0.7.9-1
+        # enthought/gpl: Qt-4.8.7-7
+        assert "alabaster-0.7.9-1.egg" in idx.keys()
+        assert "Qt-4.8.7-7.egg" in idx.keys()
