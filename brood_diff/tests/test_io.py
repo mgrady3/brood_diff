@@ -167,7 +167,7 @@ class TestIO(object):
                        PLATS,
                        VERS,
                        out_path)
-  
+
         # raises JSONDecodeError if file is empty
         idx = from_json_file(out_path)
 
