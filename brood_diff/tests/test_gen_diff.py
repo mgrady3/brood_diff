@@ -8,6 +8,7 @@ import pytest
 
 
 class TestIndexDiff(object):
+    # TODO: Use test fixtures
     # potentially useful paths for tests
     thisdir = os.path.abspath(os.path.dirname(__file__))
     srcdir = os.path.abspath(os.path.join(thisdir, os.pardir))

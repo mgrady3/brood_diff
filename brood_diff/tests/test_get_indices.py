@@ -8,6 +8,7 @@ import requests
 
 class TestGetIndex(object):
     """ Test getting json/dict index of a Brood instance."""
+    # TODO: Use test fixtures
 
     def test_get_index_bad_url(self):
         # given
