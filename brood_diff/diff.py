@@ -89,6 +89,12 @@ def cli_get_index(url, repository, platform, version, output, sort, legacy):
     to_json_file(idx, output, sort=sort)
 
 
+# TODO: fill in this wrapper
+@cli.command(name='full-index')
+def cli_get_full_index():
+    pass
+
+
 @cli.command(name="gen-diff")
 @click.option('--local', '-l', type=str)
 @click.option('--remote', '-r', type=str)
