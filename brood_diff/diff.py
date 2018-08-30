@@ -25,13 +25,12 @@ Usage:
                             -o <path-to-output-file>
 
 """
+import json
+import sys
+from typing import Iterable, NoReturn, Tuple, Union
 
 import click
-import json
 import requests
-import sys
-
-from typing import Iterable, NoReturn, Tuple, Union
 
 from brood_diff import valid
 
@@ -62,18 +61,17 @@ def cli():
               help="USe --legacy for the legacy v0 API")
 def cli_get_index(url, repository, platform, version, output, sort, legacy):
     """ CLI wrapper for get_index + to_json pipeline."""
-    # TODO: pull validation into valid.py as external function.
-    try:
+    if valid.validate_org_repo(repository):
         org, repo = repository.split("/")
-    except ValueError:
+    else:
         click.echo("Repository must be in format `org/repo`")
         return
-    if platform not in valid.PLATS:
+    if not valid.validate_platform(platform):
         click.secho("Invalid platform specification: {}".format(platform),
                     fg='red')
         click.echo("For a list of valid platforms: diff.py list-platforms.")
         return
-    if version not in valid.VERS:
+    if not valid.validate_version(version):
         click.secho("Invalid version specification: {}".format(version),
                     fg='red')
         click.echo("For a list of valid versions: diff.py list-versions.")
@@ -89,10 +87,20 @@ def cli_get_index(url, repository, platform, version, output, sort, legacy):
     to_json_file(idx, output, sort=sort)
 
 
-# TODO: fill in this wrapper
 @cli.command(name='full-index')
-def cli_get_full_index():
-    pass
+@click.option('--local', '-l', type=str)
+@click.option('--repository', '-r', multiple=True, type=str,
+              help="Repository must be in format `org/repo`")
+@click.option('--platform', '-p', multiple=True, type=str)
+@click.option('--version', '-v', multiple=True, type=str)
+@click.option('--output', '-o', type=str)
+def cli_get_full_index(local, repository, platform, version, output):
+    """ CLI wrapper for gen_full_index."""
+    gen_full_index(local,
+                   repository,
+                   platform,
+                   version,
+                   output)
 
 
 @cli.command(name="gen-diff")
@@ -141,7 +149,8 @@ def cli_full_diff(local, repository, platform,
                        repository,
                        platform,
                        version,
-                       output)
+                       output,
+                       legacy)
 
 
 @cli.command(name="list-platforms")
