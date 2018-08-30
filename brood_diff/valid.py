@@ -33,4 +33,4 @@ def validate_version(ver: str):
 
 def validate_org_repo(org_repo: str):
     """ Validate User CLI input."""
-    return "/" in org_repo and len(org_repo.split("/") == 2)
+    return "/" in org_repo and len(org_repo.split("/")) == 2
