@@ -203,6 +203,10 @@ def gen_full_index(url: str, org_repos: Tuple[str], plats: Tuple[str],
                    legacy: bool = False) -> None:
     """ Given a set of org/repo, platforms, and versions, generate a single
     json file containing the entirety of the index representing these repos.
+
+    The most common usecase would be to collect the full index of the
+    end-user's enthought/free + enthought/gpl and potentially also
+    enthought/lgpl repos.
     """
     full_index = {}
     for org_repo in org_repos:
