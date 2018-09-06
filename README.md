@@ -30,6 +30,19 @@ given brood indices represented in JSON.
                              -o <path-to-output-file>
     ```
 
+* Full Index: Use this function to generate a single son representation of
+  multiple brood indices with potentially many platforms and python versions.
+  The repo, platform, and version flags can all be used multiple times and the
+  output will be a single json file containing the full index representation.
+
+    ```
+    python diff.py full-diff -l <local-brood-url>
+                             -r <org/repo>
+                             -p <platform>
+                             -v <python-tag>
+                             -o <path-to-output-file>
+    ```
+
 * Index Diff: Use this function to calculate the difference between two brood
   indices.
 
