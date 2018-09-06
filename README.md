@@ -51,11 +51,28 @@ given brood indices represented in JSON.
                             -r <path-to-remote-index>
                             -o <path-to-output-file>
     ```
+
+* Full Diff: Use this command to calculate the full difference between a local
+  index json file and the Enthought production Brood instance. Given a set of
+  repos, platforms, and python versions, the full index from the Enthought
+  brood index will be generated and then the difference will be calculated as
+  {Enthought index} - {local index} == {Missing Eggs}
+
+  The repo, platform, and version flags can all be used multiple times and the
+  output will be a single json file containing the full index difference.
+
+    ```
+    python diff.py full-diff -l <path-to-local-index-json>
+                             -r <org/repo>
+                             -p <platform>
+                             -v <python-tag>
+                             -o <path-to-output-file>
+    ```
   
 ### Notes
 
 Repositories are specified in the Brood/Hatcher format <org/repo> e.g. to
-select the Enthought free repository : -r enthought/free.
+select the Enthought free repository, use enthought/free.
 
 Currently the diff calculates only missing eggs. The reasoning behind this is
 that we should avoid making changes to the end-user's Brood that may break
