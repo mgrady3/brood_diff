@@ -42,7 +42,9 @@ LEGACY_INDEX_ROUTE = "api/v0/json/indices"
 
 @click.group()
 def cli():
-    """ Container group for all cli commands."""
+    """ Brood diff is a CLI tool for calculating the difference between
+    two different EDS indices.
+    """
     pass
 
 
