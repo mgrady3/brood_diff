@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='brood_diff',
-    version='0.2.5',
+    version='0.3.0',
     url='',
     author='Maxwell Grady',
     author_email='mgrady@enthought.com',
