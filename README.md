@@ -36,7 +36,7 @@ given brood indices represented in JSON.
   output will be a single json file containing the full index representation.
 
     ```
-    python diff.py full-diff -l <local-brood-url>
+    python diff.py full-diff -u <brood-url>
                              -r <org/repo>
                              -p <platform>
                              -v <python-tag>
