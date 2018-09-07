@@ -50,15 +50,25 @@ def cli():
 
 
 @cli.command(name="get-index")
-@click.option('--url', '-u', type=str)
+@click.option('--url', '-u', type=str,
+              help="<EDS URL> Must include http or https as needed")
 @click.option('--repository', '-r', type=str,
-              help="Repository must be in format `org/repo`")
-@click.option('--platform', '-p', type=str)
-@click.option('--version', '-v', type=str)
-@click.option('--output', '-o', type=str)
-@click.option('--sort/--no-sort', default=True)
+              help=("<org/repo> Must be in EDS/Hatcher format: `org/repo`"
+                    "\ne.g. enthought/free"))
+@click.option('--platform', '-p', type=str,
+              help="<platform> See list-platforms for supported platforms")
+@click.option('--version', '-v', type=str,
+              help=("<python-version> See list-versions for "
+                    "supported python version tags"))
+@click.option('--output', '-o', type=str,
+              help="<path> Full path to output json file")
+@click.option('--sort/--no-sort', default=True,
+              help=("Set whether the output should be sorted."
+                    "\nDefault: --sort"))
 @click.option('--legacy/--no-legacy', default=False,
-              help="USe --legacy for the legacy v0 API")
+              help=("Use --legacy for the legacy v0 api version. Note, this "
+                    "should be used only in special circumstances."
+                    "\nDefault: --no-legacy"))
 def cli_get_index(url, repository, platform, version, output, sort, legacy):
     """ CLI wrapper for get_index + to_json pipeline."""
     if valid.validate_org_repo(repository):
