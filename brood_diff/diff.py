@@ -70,7 +70,9 @@ def cli():
                     "should be used only in special circumstances."
                     "\nDefault: --no-legacy"))
 def cli_get_index(url, repository, platform, version, output, sort, legacy):
-    """ CLI wrapper for get_index + to_json pipeline."""
+    """ Get index for a given repo/platform/python-tag from EDS instace
+    located at url specified by -u/--url and write output to file
+    specified by -o/--output."""
     if valid.validate_org_repo(repository):
         org, repo = repository.split("/")
     else:
