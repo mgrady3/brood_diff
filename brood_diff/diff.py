@@ -137,22 +137,31 @@ def cli_get_full_index(url, repository, platform, version, output, sort,
 
 
 @cli.command(name="gen-diff")
-@click.option('--local', '-l', type=str)
-@click.option('--remote', '-r', type=str)
-@click.option('--output', '-o', type=str)
+@click.option('--local', '-l', type=str,
+              help="<path> Full path to json file for local index")
+@click.option('--remote', '-r', type=str,
+              help="<path> Full path to json file for remote index")
+@click.option('--output', '-o', type=str,
+              help="<path> Full path to output json file")
 def cli_gen_diff(local, remote, output):
-    """CLI wrapper for index_diff.
+    """ Calculate the difference between two EDS indices and output the
+    result as a json file.
 
-    Note, the terminology used is from the perspective of the EDS customer.
-    Thus the local index represents the index you wish to test against the
+    Note, the terminology used is from the perspective of the EDS end-user.
+
+    Thus the local index represents the index you wish to compare to the
     remote (Enthought) index.
 
-    Example:
-    Have customer run get-index on their local EDS to generate the index of
-    their enthought/free repo as a json file - local.json.
+    Example Use Case:
+
+    End-user runs get-index on their local EDS to generate the index of
+    their enthought/free repo as a json file: local.json.
+
     Next, run the same command against the Brood production server to generate
-    the index of our enthought/free repo as a json file - remote.json.
-    Finally run gen-diff -l local.json -r remote.json
+    the index of our enthought/free repo as a json file: remote.json.
+
+    Finally run python diff.py gen-diff -l local.json -r remote.json -o
+    output_file.json
     """
     local_index = from_json_file(local)
     remote_index = from_json_file(remote)
@@ -161,14 +170,22 @@ def cli_gen_diff(local, remote, output):
 
 
 @cli.command(name="full-diff")
-@click.option('--local', '-l', type=str)
+@click.option('--local', '-l', type=str,
+              help="<path> Full path to json file for local index")
 @click.option('--repository', '-r', multiple=True, type=str,
-              help="Repository must be in format `org/repo`")
-@click.option('--platform', '-p', multiple=True, type=str)
-@click.option('--version', '-v', multiple=True, type=str)
-@click.option('--output', '-o', type=str)
+              help=("<org/repo> Must be in EDS/Hatcher format: `org/repo`"
+                    "\ne.g. enthought/free"))
+@click.option('--platform', '-p', multiple=True, type=str,
+              help="<platform> See list-platforms for supported platforms")
+@click.option('--version', '-v', multiple=True, type=str,
+              help=("<python-version> See list-versions for "
+                    "supported python version tags"))
+@click.option('--output', '-o', type=str,
+              help="<path> Full path to output json file")
 @click.option('--legacy/--no-legacy', default=False,
-              help="Use --legacy for the legacy v0 API")
+              help=("Use --legacy for the legacy v0 api version. Note, this "
+                    "should be used only in special circumstances."
+                    "\nDefault: --no-legacy"))
 def cli_full_diff(local, repository, platform,
                   version, output, legacy=False):
     """ CLI Wrapper for the full diff calculation pipeline.
@@ -178,12 +195,12 @@ def cli_full_diff(local, repository, platform,
 
     The output is a single json file containing the missing packages
     """
-    full_diff_pipeline(local,
-                       repository,
-                       platform,
-                       version,
-                       output,
-                       legacy)
+    full_diff(local,
+              repository,
+              platform,
+              version,
+              output,
+              legacy)
 
 
 @cli.command(name="list-platforms")
@@ -275,11 +292,11 @@ def index_diff(local_index: dict, remote_index: dict) -> dict:
     return {"missing": missing_egg_index}
 
 
-def full_diff_pipeline(local_idx_json: str, org_repos: Tuple[str],
-                       plats: Tuple[str], vers: Tuple[str],
-                       output: str,
-                       legacy: bool = False,
-                       remote_url: str = "https://packages.enthought.com"):
+def full_diff(local_idx_json: str, org_repos: Tuple[str],
+              plats: Tuple[str], vers: Tuple[str],
+              output: str,
+              legacy: bool = False,
+              remote_url: str = "https://packages.enthought.com"):
     """ Given set of org/repo/plat/ver, a local index file and remote EDS host,
     calculate the full index diff and write to json file specified by the
     parameter, output.
