@@ -2,6 +2,8 @@
 # All rights reserved.
 #
 
+import click
+
 
 PLATS = ["osx-x86",
          "rh5-x86",
@@ -21,16 +23,32 @@ VERS = ["cp27",
         "pp27"]
 
 
-def validate_platform(plat: str):
+def validate_platform(ctx: click.Context, plat: str):
     """ Validate User CLI input."""
-    return plat in PLATS
+    if plat in PLATS:
+        return plat
+    else:
+        raise click.BadParameter(
+            ("Invalid platform {}. Please use list-platforms for a list of"
+             " supported platforms.".format(plat)))
 
 
-def validate_version(ver: str):
+def validate_version(ctx: click.Context, ver: str):
     """ Validate User CLI input."""
-    return ver in VERS
+    if ver in VERS:
+        return ver
+    else:
+        raise click.BadParameter(
+            ("Invalid python versions {}. Please use list-platforms for a list"
+             " of supported platforms.".format(ver)))
 
 
-def validate_org_repo(org_repo: str):
+def validate_org_repo(ctx: click.Context, org_repo: str):
     """ Validate User CLI input."""
-    return "/" in org_repo and len(org_repo.split("/")) == 2
+    if "/" in org_repo and len(org_repo.split("/")) == 2:
+        return org_repo
+    else:
+        raise click.BadParameter(
+            ("Invalid repository format {}. Repositories must use the"
+             " EDS/Hatcher format <org/repo>."
+             "e.g. enthought/free".format(org_repo)))
