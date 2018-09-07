@@ -72,7 +72,7 @@ def cli():
                     "should be used only in special circumstances."
                     "\nDefault: --no-legacy"))
 def cli_get_index(url, repository, platform, version, output, sort, legacy):
-    """ Get index for a given repo/platform/python-tag from EDS instace
+    """ Get index for a given repo/platform/python-tag from EDS instance
     located at url specified by -u/--url and write output to file
     specified by -o/--output."""
     if valid.validate_org_repo(repository):
@@ -102,19 +102,38 @@ def cli_get_index(url, repository, platform, version, output, sort, legacy):
 
 
 @cli.command(name='full-index')
-@click.option('--local', '-l', type=str)
+@click.option('--url', '-u', type=str,
+              help="<EDS URL> Must include http or https as needed")
 @click.option('--repository', '-r', multiple=True, type=str,
-              help="Repository must be in format `org/repo`")
-@click.option('--platform', '-p', multiple=True, type=str)
-@click.option('--version', '-v', multiple=True, type=str)
-@click.option('--output', '-o', type=str)
-def cli_get_full_index(local, repository, platform, version, output):
-    """ CLI wrapper for gen_full_index."""
-    gen_full_index(local,
+              help=("<org/repo> Must be in EDS/Hatcher format: `org/repo`"
+                    "\ne.g. enthought/free"))
+@click.option('--platform', '-p', multiple=True, type=str,
+              help="<platform> See list-platforms for supported platforms")
+@click.option('--version', '-v', multiple=True, type=str,
+              help=("<python-version> See list-versions for "
+                    "supported python version tags"))
+@click.option('--output', '-o', type=str,
+              help="<path> Full path to output json file")
+@click.option('--sort/--no-sort', default=True,
+              help=("Set whether the output should be sorted."
+                    "\nDefault: --sort"))
+@click.option('--legacy/--no-legacy', default=False,
+              help=("Use --legacy for the legacy v0 api version. Note, this "
+                    "should be used only in special circumstances."
+                    "\nDefault: --no-legacy"))
+def cli_get_full_index(url, repository, platform, version, output, sort,
+                       legacy):
+    """ Get full json representation of multiple EDS indices from an EDS
+    instance specified by -u/--url for potentially multiple platforms,
+    repositories, and python versions, and output the full index as a single
+    json file specified by -o/--output."""
+    gen_full_index(url,
                    repository,
                    platform,
                    version,
-                   output)
+                   output,
+                   sort,
+                   legacy)
 
 
 @cli.command(name="gen-diff")
@@ -213,7 +232,7 @@ def get_index(url: str, org: str, repo: str, plat: str, pyver: str,
 
 
 def gen_full_index(url: str, org_repos: Tuple[str], plats: Tuple[str],
-                   pyvers: Tuple[str], output: str,
+                   pyvers: Tuple[str], output: str, sort: bool = True,
                    legacy: bool = False) -> None:
     """ Given a set of org/repo, platforms, and versions, generate a single
     json file containing the entirety of the index representing these repos.
@@ -233,7 +252,7 @@ def gen_full_index(url: str, org_repos: Tuple[str], plats: Tuple[str],
                                             plat,
                                             ver,
                                             legacy))
-    to_json_file(full_index, output, sort=True)
+    to_json_file(full_index, output, sort=sort)
 
 
 def index_diff(local_index: dict, remote_index: dict) -> dict:
