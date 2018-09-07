@@ -36,11 +36,11 @@ given brood indices represented in JSON.
   output will be a single json file containing the full index representation.
 
     ```
-    python diff.py full-diff -u <brood-url>
-                             -r <org/repo>
-                             -p <platform>
-                             -v <python-tag>
-                             -o <path-to-output-file>
+    python diff.py full-index -u <brood-url>
+                              -r <org/repo>
+                              -p <platform>
+                              -v <python-tag>
+                              -o <path-to-output-file>
     ```
 
 * Index Diff: Use this function to calculate the difference between two brood
