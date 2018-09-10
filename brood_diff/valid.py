@@ -29,7 +29,7 @@ def validate_platform(ctx: click.Context, plat: str):
         return plat
     else:
         raise click.BadParameter(
-            ("Invalid platform {}. Please use list-platforms for a list of"
+            ("Invalid platform: {}. Please use list-platforms for a list of"
              " supported platforms.".format(plat)))
 
 
@@ -39,16 +39,19 @@ def validate_version(ctx: click.Context, ver: str):
         return ver
     else:
         raise click.BadParameter(
-            ("Invalid python version {}. Please use list-platforms for a list"
+            ("Invalid python version: {}. Please use list-platforms for a list"
              " of supported platforms.".format(ver)))
 
 
 def validate_org_repo(ctx: click.Context, org_repo: str):
-    """ Validate User CLI input."""
+    """ Validate User CLI input.
+    Repositories are formatted using the EDS/Hatcher format <org/repo> - e.g.
+        enthought/free
+    """
     if "/" in org_repo and len(org_repo.split("/")) == 2:
         return org_repo
     else:
         raise click.BadParameter(
-            ("Invalid repository format {}. Repositories must use the"
+            ("Invalid repository format: {}. Repositories must use the"
              " EDS/Hatcher format <org/repo>."
              "e.g. enthought/free".format(org_repo)))
