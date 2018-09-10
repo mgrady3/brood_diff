@@ -15,12 +15,13 @@ class TestValidation(object):
         good_plat = "osx-x86_64"
         bad_plat = "osx-x87_64"
         ctx = None
+        param = None
 
         # when
-        g_plat = valid.validate_platform(ctx, good_plat)
+        g_plat = valid.validate_platform(ctx, param, good_plat)
 
         with pytest.raises(click.BadParameter) as execinfo:
-            valid.validate_platform(ctx, bad_plat)
+            valid.validate_platform(ctx, param, bad_plat)
 
         # then
         assert g_plat == good_plat
@@ -31,12 +32,13 @@ class TestValidation(object):
         good_vers = "cp36"
         bad_vers = "cp16"
         ctx = None
+        param = None
 
         # when
-        g_vers = valid.validate_version(ctx, good_vers)
+        g_vers = valid.validate_version(ctx, param, good_vers)
 
         with pytest.raises(click.BadParameter) as execinfo:
-            valid.validate_version(ctx, bad_vers)
+            valid.validate_version(ctx, param, bad_vers)
 
         # then
         assert g_vers == good_vers
@@ -47,12 +49,13 @@ class TestValidation(object):
         good_repo = "enthought/free"
         bad_repo = "enthought free"
         ctx = None
+        param = None
 
         # when
-        g_repo = valid.validate_org_repo(ctx, good_repo)
+        g_repo = valid.validate_org_repo(ctx, param, good_repo)
 
         with pytest.raises(click.BadParameter) as execinfo:
-            valid.validate_org_repo(ctx, bad_repo)
+            valid.validate_org_repo(ctx, param, bad_repo)
 
         # then
         assert g_repo == good_repo
