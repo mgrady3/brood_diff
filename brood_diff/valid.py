@@ -39,7 +39,7 @@ def validate_version(ctx: click.Context, ver: str):
         return ver
     else:
         raise click.BadParameter(
-            ("Invalid python versions {}. Please use list-platforms for a list"
+            ("Invalid python version {}. Please use list-platforms for a list"
              " of supported platforms.".format(ver)))
 
 
