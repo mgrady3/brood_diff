@@ -76,9 +76,7 @@ def cli_get_index(url, repository, platform, version, output, sort, legacy):
     located at url specified by -u/--url and write output to file
     specified by -o/--output."""
 
-    org, repo = valid.validate_org_repo(repository).split("/")
-    platform = valid.validate_platform(platform)
-    version = valid.validate_version(version)
+    org, repo = repository.split("/")
 
     idx = get_index(url,
                     org,
@@ -94,11 +92,14 @@ def cli_get_index(url, repository, platform, version, output, sort, legacy):
 @click.option('--url', '-u', type=str,
               help="<EDS URL> Must include http or https as needed")
 @click.option('--repository', '-r', multiple=True, type=str,
+              callback=valid.validate_org_repo,
               help=("<org/repo> Must be in EDS/Hatcher format: `org/repo`"
                     "\ne.g. enthought/free"))
 @click.option('--platform', '-p', multiple=True, type=str,
+              callback=valid.validate_platform,
               help="<platform> See list-platforms for supported platforms")
 @click.option('--version', '-v', multiple=True, type=str,
+              callback=valid.validate_version,
               help=("<python-version> See list-versions for "
                     "supported python version tags"))
 @click.option('--output', '-o', type=str,
@@ -116,6 +117,7 @@ def cli_get_full_index(url, repository, platform, version, output, sort,
     instance specified by -u/--url for potentially multiple platforms,
     repositories, and python versions, and output the full index as a single
     json file specified by -o/--output."""
+
     gen_full_index(url,
                    repository,
                    platform,
@@ -162,11 +164,14 @@ def cli_gen_diff(local, remote, output):
 @click.option('--local', '-l', type=str,
               help="<path> Full path to json file for local index")
 @click.option('--repository', '-r', multiple=True, type=str,
+              callback=valid.validate_org_repo,
               help=("<org/repo> Must be in EDS/Hatcher format: `org/repo`"
                     "\ne.g. enthought/free"))
 @click.option('--platform', '-p', multiple=True, type=str,
+              callback=valid.validate_platform,
               help="<platform> See list-platforms for supported platforms")
 @click.option('--version', '-v', multiple=True, type=str,
+              callback=valid.validate_version,
               help=("<python-version> See list-versions for "
                     "supported python version tags"))
 @click.option('--output', '-o', type=str,
