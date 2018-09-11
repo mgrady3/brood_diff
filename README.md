@@ -30,7 +30,7 @@ given brood indices represented in JSON.
                              -o <path-to-output-file>
     ```
 
-* Full Index: Use this function to generate a single son representation of
+* Full Index: Use this function to generate a single json representation of
   multiple brood indices with potentially many platforms and python versions.
   The repo, platform, and version flags can all be used multiple times and the
   output will be a single json file containing the full index representation.
