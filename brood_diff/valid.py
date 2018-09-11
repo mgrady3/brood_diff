@@ -103,4 +103,4 @@ def validate_org_repo(ctx: click.Context,
         raise click.BadParameter(
             ("Invalid repository format: {}. Repositories must use the"
              " EDS/Hatcher format <org/repo>."
-             "e.g. enthought/free".format(value)))
+             " e.g. enthought/free".format(value)))
