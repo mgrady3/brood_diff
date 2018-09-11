@@ -92,14 +92,14 @@ def cli_get_index(url, repository, platform, version, output, sort, legacy):
 @click.option('--url', '-u', type=str,
               help="<EDS URL> Must include http or https as needed")
 @click.option('--repository', '-r', multiple=True, type=str,
-              callback=valid.validate_org_repo,
+              callback=valid.validate_org_repos,
               help=("<org/repo> Must be in EDS/Hatcher format: `org/repo`"
                     "\ne.g. enthought/free"))
 @click.option('--platform', '-p', multiple=True, type=str,
-              callback=valid.validate_platform,
+              callback=valid.validate_platforms,
               help="<platform> See list-platforms for supported platforms")
 @click.option('--version', '-v', multiple=True, type=str,
-              callback=valid.validate_version,
+              callback=valid.validate_versions,
               help=("<python-version> See list-versions for "
                     "supported python version tags"))
 @click.option('--output', '-o', type=str,
@@ -164,14 +164,14 @@ def cli_gen_diff(local, remote, output):
 @click.option('--local', '-l', type=str,
               help="<path> Full path to json file for local index")
 @click.option('--repository', '-r', multiple=True, type=str,
-              callback=valid.validate_org_repo,
+              callback=valid.validate_org_repos,
               help=("<org/repo> Must be in EDS/Hatcher format: `org/repo`"
                     "\ne.g. enthought/free"))
 @click.option('--platform', '-p', multiple=True, type=str,
-              callback=valid.validate_platform,
+              callback=valid.validate_platforms,
               help="<platform> See list-platforms for supported platforms")
 @click.option('--version', '-v', multiple=True, type=str,
-              callback=valid.validate_version,
+              callback=valid.validate_versions,
               help=("<python-version> See list-versions for "
                     "supported python version tags"))
 @click.option('--output', '-o', type=str,
