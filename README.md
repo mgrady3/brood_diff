@@ -16,6 +16,21 @@ data actually needs to be uploaded to the client's server.
 Brood_diff provides a CLI method of calculating the difference between two
 given brood indices represented in JSON.
 
+### Requirements:
+
+* Runtime Requirements:
+  * Python 3.6+
+  * click >= 6.7
+  * requests >= 2.18.4
+* Development Requirements
+  * Python 3.6+
+  * click >= 6.7
+  * requests >= 2.18.4
+  * pytest >= 3.2.5
+    * Activate python env with these dependencies then execute the following
+      from the top-level directory:
+    * `python -m pytest -v` to run the test suite
+
 
 ### Usage:
 
@@ -68,7 +83,7 @@ given brood indices represented in JSON.
                              -v <python-tag>
                              -o <path-to-output-file>
     ```
-  
+
 ### Notes
 
 Repositories are specified in the Brood/Hatcher format <org/repo> e.g. to
