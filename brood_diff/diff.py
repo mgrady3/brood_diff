@@ -35,7 +35,6 @@ import requests
 from brood_diff import valid
 
 
-BASE_URL = "https://packages2.enthought.com"
 INDEX_ROUTE = "api/v1/json/indices"
 LEGACY_INDEX_ROUTE = "api/v0/json/indices"
 
