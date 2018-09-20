@@ -44,7 +44,7 @@ def cli_get_repo_size(repository, platform, version):
     sizes = get_repo_size_by_platform(repository, platform, version)
     click.secho("Repos: {}".format(repository), fg='green')
     for key in sizes.keys():
-        click.secho("{} has size {}".format(key, sizes[key]), fg='green')
+        click.secho("{} has size {} Gb".format(key, sizes[key]), fg='green')
 
 
 @contextlib.contextmanager
