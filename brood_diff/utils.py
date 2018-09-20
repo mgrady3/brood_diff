@@ -41,6 +41,9 @@ def cli():
               help=("<python-version> See list-versions for "
                     "supported python version tags"))
 def cli_get_repo_size(repository, platform, version):
+    """ Query Brood indices and calculate repo size using the egg metadata.
+    Reports total size of repo per platform in Gb.
+    """
     sizes = get_repo_size_by_platform(repository, platform, version)
     click.secho("Repos: {}".format(repository), fg='green')
     for key in sizes.keys():
